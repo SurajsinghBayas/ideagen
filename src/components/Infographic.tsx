@@ -29,7 +29,7 @@ export const Infographic: React.FC<InfographicProps> = ({ data }) => {
             overflow: 'hidden'
         }}>
             {/* Header Section */}
-            <header style={{
+            <header className="infographic-header" style={{
                 borderBottom: '2px solid #1a1a1a',
                 padding: '3rem',
                 background: '#1a1a1a',
@@ -44,7 +44,7 @@ export const Infographic: React.FC<InfographicProps> = ({ data }) => {
                 }}>
                     Study Material / Generated Asset
                 </div>
-                <h1 style={{
+                <h1 className="infographic-title" style={{
                     fontSize: '3.5rem',
                     lineHeight: 1,
                     fontFamily: 'Manrope, sans-serif',
@@ -67,16 +67,9 @@ export const Infographic: React.FC<InfographicProps> = ({ data }) => {
             </header>
 
             {/* Grid Body */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+            <div className="infographic-grid">
                 {data.keyPoints.map((point, index) => (
-                    <div key={index} style={{
-                        padding: '2.5rem',
-                        borderRight: index % 2 === 0 ? '2px solid #1a1a1a' : 'none',
-                        borderBottom: index < 2 ? '2px solid #1a1a1a' : 'none',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1rem'
-                    }}>
+                    <div key={index} className="infographic-item">
                         <div style={{
                             width: '50px',
                             height: '50px',

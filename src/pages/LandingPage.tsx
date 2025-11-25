@@ -21,7 +21,7 @@ export const LandingPage: React.FC = () => {
             <div className="grain-overlay" />
 
             {/* Navigation */}
-            <nav className="border-bottom" style={{
+            <nav className="border-bottom nav-container" style={{
                 position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 100,
                 padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 background: 'rgba(242, 240, 234, 0.9)', backdropFilter: 'blur(5px)'
@@ -36,14 +36,14 @@ export const LandingPage: React.FC = () => {
             </nav>
 
             {/* Hero Section */}
-            <header style={{ minHeight: '100vh', paddingTop: '80px', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', position: 'relative' }}>
-                <div className="border-right" style={{ padding: '4rem 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <header className="hero-grid" style={{ minHeight: '100vh', paddingTop: '80px', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', position: 'relative' }}>
+                <div className="border-right hero-content" style={{ padding: '4rem 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        <h1 style={{ fontSize: 'clamp(4rem, 8vw, 7rem)', lineHeight: 0.9, marginBottom: '2rem', color: '#1a1a1a' }}>
+                        <h1 className="mobile-text-xl" style={{ fontSize: 'clamp(4rem, 8vw, 7rem)', lineHeight: 0.9, marginBottom: '2rem', color: '#1a1a1a' }}>
                             VISUALIZE <br />
                             <span className="serif" style={{ fontWeight: 400 }}>KNOWLEDGE</span> <br />
                             INSTANTLY.
@@ -66,7 +66,7 @@ export const LandingPage: React.FC = () => {
                 </div>
 
                 {/* Right Side */}
-                <div style={{ position: 'relative', background: '#e5e5e5', overflow: 'hidden' }}>
+                <div className="hero-visual" style={{ position: 'relative', background: '#e5e5e5', overflow: 'hidden' }}>
 
                     <Hero3D />
                     <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', width: '100px', height: '100px', borderLeft: '1px solid #000', borderBottom: '1px solid #000' }} />
@@ -87,7 +87,7 @@ export const LandingPage: React.FC = () => {
             </div>
 
             {/* Grid Features */}
-            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            <section className="feature-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
                 <GridFeature
                     number="01"
                     title="Structure"
@@ -106,7 +106,7 @@ export const LandingPage: React.FC = () => {
                 />
             </section>
 
-            <footer style={{ padding: '4rem', textAlign: 'center', borderTop: '1px solid var(--border-color)' }}>
+            <footer className="footer-content" style={{ padding: '4rem', textAlign: 'center', borderTop: '1px solid var(--border-color)' }}>
                 <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Ready to see the big picture?</h2>
                 <Link to="/app" style={{ fontSize: '1.25rem', color: 'var(--accent)', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
                     Generate Infographic <ArrowUpRight size={20} />
@@ -117,7 +117,7 @@ export const LandingPage: React.FC = () => {
 };
 
 const GridFeature = ({ number, title, desc, last }: { number: string, title: string, desc: string, last?: boolean }) => (
-    <div className={`border-bottom ${!last ? 'border-right' : ''}`} style={{ padding: '4rem 2rem', minHeight: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <div className={`border-bottom feature-item ${!last ? 'border-right' : ''}`} style={{ padding: '4rem 2rem', minHeight: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--accent)' }}>({number})</div>
         <div>
             <h3 style={{ fontSize: '2.5rem', marginBottom: '1rem', letterSpacing: '-0.03em' }}>{title}</h3>

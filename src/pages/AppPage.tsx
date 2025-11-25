@@ -62,7 +62,7 @@ export const AppPage: React.FC = () => {
             <div className="grain-overlay" />
 
             {/* Top Bar */}
-            <nav className="border-bottom" style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-main)', zIndex: 10 }}>
+            <nav className="border-bottom nav-container" style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-main)', zIndex: 10 }}>
                 <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-main)', textDecoration: 'none', fontWeight: '600', textTransform: 'uppercase', fontSize: '0.9rem' }}>
                     <ArrowLeft size={18} /> Exit
                 </Link>
@@ -70,7 +70,7 @@ export const AppPage: React.FC = () => {
                 <div style={{ width: '60px' }}></div>
             </nav>
 
-            <div className="container" style={{ maxWidth: '1400px', flex: 1, display: 'flex', flexDirection: 'column', paddingTop: '4rem', paddingBottom: '4rem' }}>
+            <div className="container mobile-p-1" style={{ maxWidth: '1400px', flex: 1, display: 'flex', flexDirection: 'column', paddingTop: '4rem', paddingBottom: '4rem' }}>
 
                 {/* Input Section */}
                 <div style={{ maxWidth: '800px', margin: '0 auto', width: '100%', textAlign: 'center', marginBottom: '4rem' }}>
@@ -97,7 +97,7 @@ export const AppPage: React.FC = () => {
                     <h2 style={{ fontSize: '3rem', marginBottom: '1rem', letterSpacing: '-0.03em' }}>Topic Synthesis</h2>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Enter a concept, paragraph, or subject to visualize.</p>
 
-                    <div className="border-box" style={{ display: 'flex', padding: '0.5rem', background: 'white' }}>
+                    <div className="border-box mobile-flex-col" style={{ display: 'flex', padding: '0.5rem', background: 'white' }}>
                         <input
                             type="text"
                             placeholder="e.g. 'The French Revolution', 'Black Holes', 'Supply and Demand'"
@@ -110,7 +110,7 @@ export const AppPage: React.FC = () => {
                             }}
                         />
                         <button
-                            className="btn-primary"
+                            className="btn-primary mobile-w-full"
                             onClick={handleGenerate}
                             disabled={loading}
                             style={{ minWidth: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
@@ -139,11 +139,11 @@ export const AppPage: React.FC = () => {
                             exit={{ opacity: 0 }}
                             style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
                         >
-                            <div style={{ width: '100%', maxWidth: '800px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                            <div className="mobile-flex-col mobile-gap-1" style={{ width: '100%', maxWidth: '800px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
                                     <h3 style={{ fontSize: '1.5rem', fontWeight: '700' }}>Preview</h3>
                                 </div>
-                                <button className="btn-secondary" onClick={handleDownload} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', padding: '0.5rem 1rem' }}>
+                                <button className="btn-secondary mobile-w-full" onClick={handleDownload} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', padding: '0.5rem 1rem' }}>
                                     <Download size={18} /> Export Poster
                                 </button>
                             </div>

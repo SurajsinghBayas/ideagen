@@ -157,3 +157,200 @@ h6 {
     transform: translateX(-50%);
   }
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .mobile-flex-col {
+    flex-direction: column !important;
+  }
+
+  .mobile-flex-row {
+    flex-direction: row !important;
+  }
+
+  .mobile-grid-1 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mobile-p-1 {
+    padding: 1rem !important;
+  }
+
+  .mobile-p-2 {
+    padding: 2rem !important;
+  }
+
+  .mobile-px-1 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .mobile-py-1 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .mobile-w-full {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .mobile-h-auto {
+    height: auto !important;
+    min-height: auto !important;
+  }
+
+  .mobile-text-center {
+    text-align: center !important;
+  }
+
+  .mobile-text-left {
+    text-align: left !important;
+  }
+
+  .mobile-hidden {
+    display: none !important;
+  }
+
+  .mobile-block {
+    display: block !important;
+  }
+
+  .mobile-mt-1 {
+    margin-top: 1rem !important;
+  }
+
+  .mobile-mt-2 {
+    margin-top: 2rem !important;
+  }
+
+  .mobile-mb-1 {
+    margin-bottom: 1rem !important;
+  }
+
+  .mobile-gap-1 {
+    gap: 1rem !important;
+  }
+
+  .mobile-gap-05 {
+    gap: 0.5rem !important;
+  }
+
+  .mobile-text-xl {
+    font-size: 2.5rem !important;
+  }
+
+  .mobile-text-lg {
+    font-size: 1.5rem !important;
+  }
+
+  .mobile-text-base {
+    font-size: 1rem !important;
+  }
+
+  .mobile-border-none {
+    border: none !important;
+  }
+
+  .mobile-border-bottom {
+    border-bottom: 1px solid var(--border-color) !important;
+  }
+
+  .mobile-border-right-none {
+    border-right: none !important;
+  }
+
+  /* Specific component overrides */
+  .nav-container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem !important;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    padding-top: 60px !important;
+  }
+
+  .hero-content {
+    padding: 2rem !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .hero-visual {
+    height: 300px !important;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .feature-item {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    min-height: auto !important;
+    padding: 2rem !important;
+  }
+
+  .footer-content {
+    padding: 2rem !important;
+  }
+
+  /* Infographic Mobile overrides */
+  .infographic-header {
+    padding: 1.5rem !important;
+  }
+
+  .infographic-title {
+    font-size: 2rem !important;
+  }
+
+  .infographic-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .infographic-item {
+    padding: 1.5rem !important;
+    border-right: none !important;
+    border-bottom: 2px solid #1a1a1a !important;
+  }
+
+  .infographic-item:last-child {
+    border-bottom: none !important;
+  }
+}
+
+/* Infographic Desktop Styles (to replace inline) */
+.infographic-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.infographic-item {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-right: 2px solid #1a1a1a;
+  border-bottom: 2px solid #1a1a1a;
+}
+
+.infographic-item:nth-child(2n) {
+  border-right: none;
+}
+
+/* Assuming 4 items usually, but let's make it generic for the bottom border if possible,
+   or stick to the component logic via style prop for desktop if it's dynamic.
+   Actually, the component logic was: index < 2 ? border : none.
+   This implies a 2x2 grid.
+   If I use CSS grid, I can use nth-last-child to handle the bottom row.
+*/
+.infographic-item:nth-last-child(1),
+.infographic-item:nth-last-child(2) {
+  border-bottom: none;
+}

@@ -149,7 +149,7 @@ export const QuizPage: React.FC = () => {
             <div className="grain-overlay" />
 
             {/* Navigation */}
-            <nav className="border-bottom" style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-main)', zIndex: 10 }}>
+            <nav className="border-bottom nav-container" style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-main)', zIndex: 10 }}>
                 <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-main)', textDecoration: 'none', fontWeight: '600', textTransform: 'uppercase', fontSize: '0.9rem' }}>
                     <ArrowLeft size={18} /> Exit
                 </Link>
@@ -157,11 +157,11 @@ export const QuizPage: React.FC = () => {
                 <div style={{ width: '60px' }}></div>
             </nav>
 
-            <div className="container" style={{ maxWidth: '1000px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '2rem' }}>
+            <div className="container mobile-p-1" style={{ maxWidth: '1000px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '2rem' }}>
 
                 {/* SETUP STEP */}
                 {step === 'SETUP' && (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="border-box" style={{ background: 'white', padding: '3rem' }}>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="border-box mobile-p-2" style={{ background: 'white', padding: '3rem' }}>
                         <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Configure Assessment</h2>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -188,7 +188,7 @@ export const QuizPage: React.FC = () => {
 
                             <div>
                                 <label style={{ display: 'block', fontWeight: '600', marginBottom: '0.5rem' }}>DIFFICULTY</label>
-                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                <div className="mobile-flex-col" style={{ display: 'flex', gap: '1rem' }}>
                                     {['Easy', 'Moderate', 'Difficult'].map((level) => (
                                         <button
                                             key={level}
@@ -241,14 +241,14 @@ export const QuizPage: React.FC = () => {
                             key={currentQuestionIndex}
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="border-box"
+                            className="border-box mobile-p-2"
                             style={{ background: 'white', padding: '3rem' }}
                         >
                             <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', lineHeight: 1.4 }}>
                                 {quizData.questions[currentQuestionIndex].question}
                             </h3>
 
-                            <div style={{ display: 'grid', gap: '1rem' }}>
+                            <div className="mobile-grid-1" style={{ display: 'grid', gap: '1rem' }}>
                                 {quizData.questions[currentQuestionIndex].options.map((option, idx) => (
                                     <button
                                         key={idx}
@@ -294,7 +294,7 @@ export const QuizPage: React.FC = () => {
                 {/* RESULT STEP */}
                 {step === 'RESULT' && quizData && (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-                        <div ref={resultRef} className="border-box" style={{ background: 'white', padding: '4rem', width: '100%', maxWidth: '800px', position: 'relative' }}>
+                        <div ref={resultRef} className="border-box mobile-p-2" style={{ background: 'white', padding: '4rem', width: '100%', maxWidth: '800px', position: 'relative' }}>
                             <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                                 <div style={{ fontWeight: '800', fontSize: '0.8rem', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>FLASHGEN AI ASSESSMENT</div>
                                 <h2 style={{ fontSize: '4rem', lineHeight: 1, marginBottom: '0.5rem' }}>{score} / 10</h2>
@@ -314,7 +314,7 @@ export const QuizPage: React.FC = () => {
                                             </span>
                                             {i + 1}. {q.question}
                                         </div>
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.9rem' }}>
+                                        <div className="mobile-grid-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.9rem' }}>
                                             <div style={{ color: userAnswers[i] === q.correctIndex ? 'green' : 'red' }}>
                                                 <span style={{ fontWeight: '600' }}>Your Answer:</span> {q.options[userAnswers[i]] || 'Skipped'}
                                             </div>
@@ -344,17 +344,17 @@ export const QuizPage: React.FC = () => {
                             <div style={{ position: 'absolute', top: '2rem', right: '2rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{new Date().toLocaleDateString()}</div>
                         </div>
 
-                        <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', marginBottom: '4rem' }}>
-                            <button className="btn-primary" onClick={handleDownloadCertificate} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <div className="mobile-flex-col mobile-gap-1" style={{ display: 'flex', gap: '1rem', marginTop: '2rem', marginBottom: '4rem' }}>
+                            <button className="btn-primary mobile-w-full" onClick={handleDownloadCertificate} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <Download size={18} /> Download Score Card
                             </button>
-                            <button className="btn-secondary" onClick={handleDownloadResult} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <button className="btn-secondary mobile-w-full" onClick={handleDownloadResult} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <Download size={18} /> Download Full Report
                             </button>
-                            <button className="btn-secondary" onClick={handleReattempt}>
+                            <button className="btn-secondary mobile-w-full" onClick={handleReattempt}>
                                 Reattempt
                             </button>
-                            <button className="btn-secondary" onClick={() => setStep('SETUP')}>
+                            <button className="btn-secondary mobile-w-full" onClick={() => setStep('SETUP')}>
                                 New Topic
                             </button>
                         </div>

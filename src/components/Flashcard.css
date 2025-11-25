@@ -53,3 +53,15 @@
 .content h3 {
     margin: 0;
 }
+
+@media (max-width: 768px) {
+
+    .flashcard-front,
+    .flashcard-back {
+        padding: 1.5rem;
+    }
+
+    .flashcard-container {
+        height: 240px;
+    }
+}
