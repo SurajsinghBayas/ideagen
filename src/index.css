@@ -273,7 +273,7 @@ h6 {
 
   .hero-grid {
     grid-template-columns: 1fr !important;
-    padding-top: 60px !important;
+    padding-top: 200px !important;
   }
 
   .hero-content {
