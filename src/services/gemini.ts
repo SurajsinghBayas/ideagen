@@ -21,6 +21,43 @@ export interface InfographicData {
     isEducational: boolean;
 }
 
+// Retry configuration
+const MAX_RETRIES = 3;
+const INITIAL_DELAY_MS = 1000;
+
+// Helper function for delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Helper function to check if error is a rate limit error
+const isRateLimitError = (error: unknown): boolean => {
+    if (error instanceof Error) {
+        const message = error.message.toLowerCase();
+        return message.includes('rate limit') ||
+            message.includes('quota') ||
+            message.includes('429') ||
+            message.includes('resource exhausted');
+    }
+    return false;
+};
+
+// Retry wrapper with exponential backoff
+const retryWithBackoff = async <T>(
+    fn: () => Promise<T>,
+    retries: number = MAX_RETRIES,
+    delayMs: number = INITIAL_DELAY_MS
+): Promise<T> => {
+    try {
+        return await fn();
+    } catch (error) {
+        if (retries > 0 && isRateLimitError(error)) {
+            console.warn(`Rate limit hit. Retrying in ${delayMs}ms... (${retries} attempts remaining)`);
+            await delay(delayMs);
+            return retryWithBackoff(fn, retries - 1, delayMs * 2); // Exponential backoff
+        }
+        throw error;
+    }
+};
+
 export const generateInfographic = async (input: string): Promise<InfographicData | null> => {
     if (!API_KEY || !genAI) {
         console.warn("No API Key provided. Using mock data.");
@@ -48,10 +85,10 @@ export const generateInfographic = async (input: string): Promise<InfographicDat
         });
     }
 
-    try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    // Use gemini-1.5-flash for higher rate limits and faster responses
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-        const prompt = `
+    const prompt = `
       Analyze the following input: "${input}".
       
       First, determine if this input is educational or related to a study topic. 
@@ -70,12 +107,15 @@ export const generateInfographic = async (input: string): Promise<InfographicDat
       Return ONLY the raw JSON. No markdown formatting.
     `;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
-        const cleanText = text.replace(/```json/g, "").replace(/```/g, "").trim();
-
-        const data = JSON.parse(cleanText) as InfographicData;
+    try {
+        // Use retry wrapper for the API call
+        const data = await retryWithBackoff(async () => {
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+            const cleanText = text.replace(/```json/g, "").replace(/```/g, "").trim();
+            return JSON.parse(cleanText) as InfographicData;
+        });
 
         if (!data.isEducational) {
             return null;
@@ -85,6 +125,9 @@ export const generateInfographic = async (input: string): Promise<InfographicDat
 
     } catch (error) {
         console.error("Error generating infographic:", error);
+        if (isRateLimitError(error)) {
+            throw new Error("Rate limit exceeded. Please try again in a few moments.");
+        }
         throw new Error("Failed to generate infographic.");
     }
 };
