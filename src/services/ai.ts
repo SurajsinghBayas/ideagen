@@ -106,7 +106,7 @@ export const generateInfographic = async (input: string): Promise<InfographicDat
         });
 
         if (!data.isEducational) {
-             return null;
+            return null;
         }
         return data;
 
