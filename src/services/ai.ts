@@ -1,4 +1,5 @@
 import { HfInference } from "@huggingface/inference";
+import { retryWithBackoff } from "../utils/retry";
 
 const HF_TOKEN = import.meta.env.VITE_HF_TOKEN || "";
 
@@ -83,6 +84,7 @@ export const generateInfographic = async (input: string): Promise<InfographicDat
 
         console.log("Sending request to HF...");
         try {
+        const data = await retryWithBackoff(async () => {
             const response = await hf.chatCompletion({
                 model: 'Qwen/Qwen2.5-72B-Instruct',
                 messages: [
@@ -94,16 +96,19 @@ export const generateInfographic = async (input: string): Promise<InfographicDat
             });
 
             const text = response.choices[0].message.content || "";
-            console.log("Raw AI Response:", text);
+            // console.log("Raw AI Response:", text); // Clean up log
             const cleanText = text.replace(/```json/g, "").replace(/```/g, "").trim();
             const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
             const jsonString = jsonMatch ? jsonMatch[0] : cleanText;
 
-            const data = JSON.parse(jsonString) as InfographicData;
-            if (!data.isEducational) {
-                return null;
-            }
-            return data;
+            const parsed = JSON.parse(jsonString) as InfographicData;
+            return parsed;
+        });
+
+        if (!data.isEducational) {
+             return null;
+        }
+        return data;
 
         } catch (apiError) {
             console.warn("API Request Failed, falling back to offline mode:", apiError);
@@ -123,9 +128,9 @@ export const generateInfographic = async (input: string): Promise<InfographicDat
             };
         }
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Critical error in AI service:", error);
-        throw new Error(error.message || "Failed to generate infographic.");
+        throw new Error(error instanceof Error ? error.message : "Failed to generate infographic.");
     }
 };
 
@@ -136,7 +141,7 @@ export const generateQuiz = async (topic: string, syllabus: string, difficulty: 
             setTimeout(() => {
                 resolve({
                     topic,
-                    difficulty: difficulty as any,
+                    difficulty: difficulty as 'Easy' | 'Moderate' | 'Difficult',
                     questions: Array(10).fill(null).map((_, i) => ({
                         question: `Mock Question ${i + 1} about ${topic} (${difficulty})`,
                         options: ["Option A", "Option B", "Option C", "Option D"],
@@ -168,35 +173,39 @@ export const generateQuiz = async (topic: string, syllabus: string, difficulty: 
       Do not include any markdown or explanation. Just the JSON array.
     `;
 
-        const response = await hf.chatCompletion({
-            model: 'Qwen/Qwen2.5-72B-Instruct',
-            messages: [
-                { role: "system", content: "You are a strict quiz generator. Output ONLY valid JSON." },
-                { role: "user", content: prompt }
-            ],
-            max_tokens: 2000,
-            temperature: 0.7,
+        const data = await retryWithBackoff(async () => {
+            const response = await hf.chatCompletion({
+                model: 'Qwen/Qwen2.5-72B-Instruct',
+                messages: [
+                    { role: "system", content: "You are a strict quiz generator. Output ONLY valid JSON." },
+                    { role: "user", content: prompt }
+                ],
+                max_tokens: 2000,
+                temperature: 0.7,
+            });
+
+            const text = response.choices[0].message.content || "";
+            const cleanText = text.replace(/```json/g, "").replace(/```/g, "").trim();
+            const jsonMatch = cleanText.match(/\[[\s\S]*\]/); // Match array
+            const jsonString = jsonMatch ? jsonMatch[0] : cleanText;
+
+            const questions = JSON.parse(jsonString) as QuizQuestion[];
+
+            return {
+                topic,
+                difficulty: difficulty as 'Easy' | 'Moderate' | 'Difficult',
+                questions
+            };
         });
 
-        const text = response.choices[0].message.content || "";
-        const cleanText = text.replace(/```json/g, "").replace(/```/g, "").trim();
-        const jsonMatch = cleanText.match(/\[[\s\S]*\]/); // Match array
-        const jsonString = jsonMatch ? jsonMatch[0] : cleanText;
+        return data;
 
-        const questions = JSON.parse(jsonString) as QuizQuestion[];
-
-        return {
-            topic,
-            difficulty: difficulty as any,
-            questions
-        };
-
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error generating quiz:", error);
         // Fallback Mock
         return {
             topic,
-            difficulty: difficulty as any,
+            difficulty: difficulty as 'Easy' | 'Moderate' | 'Difficult',
             questions: Array(10).fill(null).map((_, i) => ({
                 question: `(Offline) Question ${i + 1} about ${topic}`,
                 options: ["A", "B", "C", "D"],
