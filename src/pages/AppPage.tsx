@@ -33,8 +33,8 @@ export const AppPage: React.FC = () => {
             } else {
                 setError("This topic doesn't seem to be educational. Please try a study-related topic.");
             }
-        } catch (error: any) {
-            setError(error.message || "Failed to generate content. Please try again.");
+        } catch (error: unknown) {
+            setError(error instanceof Error ? error.message : "Failed to generate content. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -52,7 +52,7 @@ export const AppPage: React.FC = () => {
             link.download = `${topic.replace(/\s+/g, '_')}_infographic.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
-        } catch (err) {
+        } catch (err: unknown) {
             console.error("Download failed", err);
         }
     };
