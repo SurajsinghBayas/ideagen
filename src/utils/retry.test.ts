@@ -8,6 +8,7 @@ describe('retryWithBackoff', () => {
     });
 
     afterEach(() => {
+        vi.useRealTimers();
         vi.restoreAllMocks();
     });
 
